@@ -1,5 +1,6 @@
 using CodingChallenges;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -70,6 +71,58 @@ namespace CodingChallengesTests
 
             for (int i = 0; i < expectedValues.Length; i++)
                 Assert.Equal(expectedValues[i], result[i].Value);
+        }
+
+        [Fact]
+        public void ShouldHaveAllVatCodesConsistentlyNamedAndDescribed()
+        {
+            var sut = CreateSut();
+            var nameTemplate = "ALV{0}";
+            var descriptionTemplate = "Alv {0}%";
+
+            var vatCodes = sut.VatCodes;
+            
+            Assert.All(vatCodes,
+                v =>
+                {
+                    Assert.Equal(string.Format(nameTemplate, v.Value), v.Name);
+                    Assert.Equal(string.Format(descriptionTemplate, v.Value), v.Description);
+                });
+        }
+
+        [Fact]
+        public void ShouldHaveUniqueIdOnAllVatCodeEntries()
+        {
+            var sut = CreateSut();
+
+            var vatCodes = sut.VatCodes;
+
+            var ids = vatCodes.Select(v => v.Id).ToList();
+            var distinctIds = ids.Distinct();
+            
+            Assert.Equal(distinctIds, ids);
+        }
+
+        [Fact]
+        public void ShouldNotHaveOverlappingTimelinesInVatCodeEntries()
+        {
+            var sut = CreateSut();
+
+            var vatCodesByValue = sut.VatCodes.ToLookup(k => k.Value);
+
+            foreach (var vatCodeType in vatCodesByValue.Where(v => v.Count() > 1))
+            {
+                var ordered = vatCodeType.OrderBy(v => v.ValidityStartDate).ToArray();
+                for (int i = 1; i < ordered.Length; i++)
+                {
+                    var previous = ordered[i - 1];
+                    var current = ordered[i];
+                    Assert.NotNull(previous.ValidityEndDate);
+                    Assert.True(previous.ValidityStartDate < previous.ValidityEndDate);
+                    Assert.True(current.ValidityStartDate > previous.ValidityEndDate);
+                    Assert.True(current.ValidityEndDate is null || current.ValidityEndDate > current.ValidityStartDate);
+                }
+            }
         }
     }
 }
