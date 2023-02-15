@@ -23,14 +23,14 @@ namespace CodingChallengesTests
         }
 
         [Theory]
-        [InlineData(1, "")]
-        [InlineData(3, "Pepsi")]
-        [InlineData(5, "Coke")]
-        [InlineData(15, "Dr. Pepper")]
-        [InlineData(77, "")]
-        [InlineData(100, "Coke")]
-        [InlineData(90, "Dr. Pepper")]
-        public void PepsiOrCokeShouldReturnStringBasedOnNumber(int number, string exprectedResult)
+        [InlineData(1)]
+        [InlineData(3, DrinkNameConstants.Pepsi)]
+        [InlineData(5, DrinkNameConstants.Coke)]
+        [InlineData(15, DrinkNameConstants.DrPepper)]
+        [InlineData(77)]
+        [InlineData(100, DrinkNameConstants.Coke)]
+        [InlineData(90, DrinkNameConstants.DrPepper)]
+        public void PepsiOrCokeShouldReturnStringBasedOnNumber(int number, string exprectedResult = "")
         {
             //Arrange
             var sut = CreateSut();
