@@ -17,7 +17,21 @@ namespace CodingChallenges
         //Check Unit tests project for possible tips. There might be also need to improve tests.
         public string PreferredColaBrand(int number)
         {
-            throw new NotImplementedException();   
+            if (number <= 0)
+                throw new ArgumentException(
+                    "Number less than equal to zero is not valid",
+                    nameof(number));
+
+            var isDivisibleBy3 = number % 3 is 0;
+            var isDivisibleBy5 = number % 5 is 0;
+
+            if (isDivisibleBy3 && isDivisibleBy5)
+                return "Dr. Pepper";
+            if (isDivisibleBy3)
+                return "Pepsi";
+            if (isDivisibleBy5)
+                return "Coke";
+            return string.Empty;
         }
     }
 }
