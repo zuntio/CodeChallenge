@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("CodingChallengesTests")]
 namespace CodingChallenges
 {
     public class Challenge01
