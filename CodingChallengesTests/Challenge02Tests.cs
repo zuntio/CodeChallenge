@@ -52,12 +52,12 @@ namespace CodingChallengesTests
         }
 
         [Theory]
-        [InlineData("1997-12-31", "ALV22,ALV17,ALV12,ALV6,ALV0")]
-        [InlineData("1998-01-01", "ALV22,ALV17,ALV8,ALV0")]
-        [InlineData("2010-06-30", "ALV22,ALV12,ALV8,ALV0")]
-        [InlineData("2010-07-01", "ALV23,ALV13,ALV9,ALV0")]
-        [InlineData("2013-01-01", "ALV24,ALV14,ALV10,ALV0")]
-        public void ShouldReturnExpectedCatergoriesOnGivenDate(string date, string expectedCategories)
+        [InlineData("1997-12-31", 22, 17, 12, 6, 0)]
+        [InlineData("1998-01-01", 22, 17, 8 ,0)]
+        [InlineData("2010-06-30", 22, 12, 8 ,0)]
+        [InlineData("2010-07-01", 23, 13, 9 ,0)]
+        [InlineData("2013-01-01", 24, 14, 10 ,0)]
+        public void ShouldReturnExpectedCatergoriesOnGivenDate(string date, params int[] expectedValues)
         {
             //Arrange
             var sut = CreateSut();
@@ -66,12 +66,10 @@ namespace CodingChallengesTests
             var result = sut.ValueAddedTaxCategoriesOn(date);
 
             //Assert
-            var categories = expectedCategories.Split(',');
-            Assert.True(result.Count == categories.Length);
+            Assert.Equal(expectedValues.Length, result.Count);
 
-            var resultCategories = result.Select(x => x.Name).Aggregate("", (a, b) => $"{a}{(a.Any() ? "," : "")}{b}");
-            Assert.Equal(expectedCategories, resultCategories);
-            
+            for (int i = 0; i < expectedValues.Length; i++)
+                Assert.Equal(expectedValues[i], result[i].Value);
         }
     }
 }
