@@ -30,7 +30,7 @@ namespace CodingChallengesTests
         [InlineData(77)]
         [InlineData(100, DrinkNameConstants.Coke)]
         [InlineData(90, DrinkNameConstants.DrPepper)]
-        public void PepsiOrCokeShouldReturnStringBasedOnNumber(int number, string exprectedResult = "")
+        public void PepsiOrCokeShouldReturnStringBasedOnNumber(int number, string expectedResult = "")
         {
             //Arrange
             var sut = CreateSut();
@@ -39,7 +39,7 @@ namespace CodingChallengesTests
             var result = sut.PreferredColaBrand(number);
 
             //Assert
-            Assert.Equal(exprectedResult, result);
+            Assert.Equal(expectedResult, result);
         }
     }
 }
