@@ -57,7 +57,7 @@ namespace CodingChallengesTests
         [InlineData("2010-06-30", 22, 12, 8 ,0)]
         [InlineData("2010-07-01", 23, 13, 9 ,0)]
         [InlineData("2013-01-01", 24, 14, 10 ,0)]
-        public void ShouldReturnExpectedCatergoriesOnGivenDate(string date, params int[] expectedValues)
+        public void ShouldReturnExpectedCategoriesOnGivenDate(string date, params int[] expectedValues)
         {
             //Arrange
             var sut = CreateSut();
