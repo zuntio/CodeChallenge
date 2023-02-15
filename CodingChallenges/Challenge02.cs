@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace CodingChallenges
 {
     public class Challenge02
     {
+        private const string Format = "yyyy-MM-dd";
+        
         //TODO: 
         //Create a function that returns list of Value added tax (Vat) Codes that are valid on a given local date (like "2021-12-31").
         //All possible values are already added to VatCodes list for you. Do not edit data in VatCodes list.
@@ -15,7 +19,26 @@ namespace CodingChallenges
         //Check Unit tests project for possible tips. There might be also need to improve tests.
         public List<VatCode> ValueAddedTaxCategoriesOn(string date)
         {
-            throw new NotImplementedException();
+            if (!DateTime.TryParseExact(
+                    date,
+                    Format,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.AssumeLocal,
+                    out var parsedDate))
+                throw new ArgumentException($"{date} is not a valid date", nameof(date));
+
+            return VatCodes.Where(VatTimeRangeIsEffective)
+                .OrderByDescending(v => v.Value)
+                .ToList();
+
+            bool VatTimeRangeIsEffective(VatCode vatCode)
+            {
+                if (vatCode.ValidityStartDate > parsedDate)
+                    return false;
+                if (vatCode.ValidityEndDate is { } e && e < parsedDate)
+                    return false;
+                return true;
+            }
         }
 
         // Data structure for holding information about vat on certain date period
@@ -40,7 +63,7 @@ namespace CodingChallenges
 
             public override string ToString()
             {
-                return $"{Id} {Name} {Value} {Description} {ValidityStartDate:yyyy-MM-dd}-{ValidityEndDate:yyyy-MM-dd}";
+                return $"{Id} {Name} {Value} {Description} {ValidityStartDate:Format}-{ValidityEndDate:Format}";
             }
         }
 
