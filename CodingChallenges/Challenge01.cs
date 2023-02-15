@@ -26,12 +26,19 @@ namespace CodingChallenges
             var isDivisibleBy5 = number % 5 is 0;
 
             if (isDivisibleBy3 && isDivisibleBy5)
-                return "Dr. Pepper";
+                return DrinkNameConstants.DrPepper;
             if (isDivisibleBy3)
-                return "Pepsi";
+                return DrinkNameConstants.Pepsi;
             if (isDivisibleBy5)
-                return "Coke";
+                return DrinkNameConstants.Coke;
             return string.Empty;
         }
+    }
+
+    internal static class DrinkNameConstants
+    {
+        internal const string Coke = nameof(Coke);
+        internal const string Pepsi = nameof(Pepsi);
+        internal const string DrPepper = "Dr. Pepper";
     }
 }
